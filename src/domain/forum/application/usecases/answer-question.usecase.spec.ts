@@ -1,9 +1,8 @@
 import { AnswerQuestionUseCase } from './answer-question.usecase'
-import { AnswersRepository } from '../repositories/answers.repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository'
 
 describe('Answer Questio Use Case', async () => {
-  let answersRepository: AnswersRepository
+  let answersRepository: InMemoryAnswersRepository
   let sut: AnswerQuestionUseCase
 
   beforeEach(() => {
@@ -18,6 +17,7 @@ describe('Answer Questio Use Case', async () => {
       content: 'answer',
     })
 
-    expect(answer.content).toEqual('answer')
+    expect(answer.id).toBeTruthy()
+    expect(answersRepository.intems[0].id).toEqual(answer.id)
   })
 })

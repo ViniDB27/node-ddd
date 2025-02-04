@@ -4,7 +4,7 @@ import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { Optional } from '@/core/types/optional'
 import { Slug } from '@/domain/vos/slug.vo'
 
-interface QuestionProps {
+export interface QuestionProps {
   authorId: UniqueEntityId
   bestAnswerId?: UniqueEntityId
   content: string

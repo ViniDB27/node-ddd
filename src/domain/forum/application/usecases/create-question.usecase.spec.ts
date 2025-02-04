@@ -1,9 +1,8 @@
-import { QuestionRepository } from '../repositories/questions.repository'
 import { CreateQuestionUseCase } from './create-question.usecsae'
 import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question.repository'
 
 describe('Create Questio Use Case', async () => {
-  let questionsRepository: QuestionRepository
+  let questionsRepository: InMemoryQuestionRepository
   let sut: CreateQuestionUseCase
 
   beforeEach(() => {
@@ -19,5 +18,6 @@ describe('Create Questio Use Case', async () => {
     })
 
     expect(question.id).toBeTruthy()
+    expect(questionsRepository.intems[0].id).toEqual(question.id)
   })
 })

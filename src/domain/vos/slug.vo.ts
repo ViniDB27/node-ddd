@@ -1,12 +1,16 @@
 export class Slug {
   private readonly _value: string
 
-  constructor(value: string) {
+  private constructor(value: string) {
     this._value = value
   }
 
   get value() {
     return this._value
+  }
+
+  static create(slug: string) {
+    return new Slug(slug)
   }
 
   static createFromText(text: string) {
