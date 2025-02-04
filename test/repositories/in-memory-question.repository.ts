@@ -14,12 +14,12 @@ export class InMemoryQuestionRepository implements QuestionRepository {
   }
 
   async findBySlug(slug: string) {
-    return this.intems.find((question) => question.slug.value === slug) ?? null
+    return this.intems.find((item) => item.slug.value === slug) ?? null
   }
 
   async findById(questionId: string) {
     return (
-      this.intems.find((question) => question.id.toString() === questionId) ??
+      this.intems.find((item) => item.id.toString() === questionId) ??
       null
     )
   }

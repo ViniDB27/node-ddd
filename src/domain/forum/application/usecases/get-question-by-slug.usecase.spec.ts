@@ -1,5 +1,5 @@
 import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question.repository'
-import { GetQuestionBySlugUseCase } from './get-question-by-slug.usecsae'
+import { GetQuestionBySlugUseCase } from './get-question-by-slug.usecase'
 import { Slug } from '@/domain/vos/slug.vo'
 import { makeQuestion } from 'test/factories/make-questio'
 
