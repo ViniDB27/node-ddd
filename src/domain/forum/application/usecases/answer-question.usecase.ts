@@ -1,5 +1,5 @@
-import { UniqueEntityId } from '../../core/vos/unique-entity-id.vo'
-import { Answer } from '../entities/answer.entity'
+import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
+import { Answer } from '../../enterprise/entities/answer.entity'
 import { AnswersRepository } from '../repositories/answers.repository'
 
 interface AnswerQuestionUseCaseRequest {
@@ -22,6 +22,6 @@ export class AnswerQuestionUseCase {
       questionId: new UniqueEntityId(questionId),
     })
     await this.answersRepository.create(answer)
-    return answer
+    return { answer }
   }
 }
