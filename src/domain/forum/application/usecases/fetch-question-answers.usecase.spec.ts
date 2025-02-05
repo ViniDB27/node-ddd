@@ -3,7 +3,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.r
 import { makeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 
-describe('Fetch Recent Questions Use Case', async () => {
+describe('Fetch Question Answers Use Case', async () => {
   let answersRepository: InMemoryAnswersRepository
   let sut: FetchQuestionAnswersCase
 
