@@ -3,7 +3,7 @@ import { DeleteQuestionUseCase } from './delete-question.usecsae'
 import { makeQuestion } from 'test/factories/make-questio'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 
-describe('Delete Questio Use Case', async () => {
+describe('Delete Question Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
   let sut: DeleteQuestionUseCase
 

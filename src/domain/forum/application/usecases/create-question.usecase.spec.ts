@@ -1,7 +1,7 @@
 import { CreateQuestionUseCase } from './create-question.usecsae'
 import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question.repository'
 
-describe('Create Questio Use Case', async () => {
+describe('Create Question Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
   let sut: CreateQuestionUseCase
 

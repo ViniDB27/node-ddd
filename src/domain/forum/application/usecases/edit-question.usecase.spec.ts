@@ -3,7 +3,7 @@ import { makeQuestion } from 'test/factories/make-questio'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { EditQuestionUseCase } from './edit-question.usecase'
 
-describe('Edit Questio Use Case', async () => {
+describe('Edit Question Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
   let sut: EditQuestionUseCase
 
