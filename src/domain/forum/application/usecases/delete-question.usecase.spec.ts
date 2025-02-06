@@ -25,7 +25,7 @@ describe('Delete Question Use Case', async () => {
       questionId: 'question-1',
     })
 
-    expect(questionsRepository.intems).toHaveLength(0)
+    expect(questionsRepository.items).toHaveLength(0)
   })
 
   it('shold not be able to delete a question from another user', async () => {

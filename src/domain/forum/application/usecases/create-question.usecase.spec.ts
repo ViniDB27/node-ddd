@@ -18,6 +18,6 @@ describe('Create Question Use Case', async () => {
     })
 
     expect(question.id).toBeTruthy()
-    expect(questionsRepository.intems[0].id).toEqual(question.id)
+    expect(questionsRepository.items[0].id).toEqual(question.id)
   })
 })
