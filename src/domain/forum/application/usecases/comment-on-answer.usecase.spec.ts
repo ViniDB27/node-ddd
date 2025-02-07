@@ -3,7 +3,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.r
 import { CommentAnswerUseCase } from './comment-on-answer.usecase'
 import { makeAnswer } from 'test/factories/make-answer'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
-import { AnswerComment } from '../../enterprise/entities/answer-comment'
+import { AnswerComment } from '../../enterprise/entities/answer-comment.entity'
 
 describe('Comment on Answer Use Case', async () => {
   let answerCommentsRepository: InMemoryAnswerCommentRepository

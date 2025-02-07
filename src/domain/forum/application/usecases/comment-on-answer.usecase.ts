@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { AnswersRepository } from '../repositories/answers.repository'
 import { AnswerCommentRepository } from '../repositories/answer-comments.repository'
-import { AnswerComment } from '../../enterprise/entities/answer-comment'
+import { AnswerComment } from '../../enterprise/entities/answer-comment.entity'
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 

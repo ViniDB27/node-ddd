@@ -1,6 +1,6 @@
 import { PaginateParams } from '@/core/repositories/pagination-params'
 import { AnswerCommentRepository } from '@/domain/forum/application/repositories/answer-comments.repository'
-import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
+import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment.entity'
 
 export class InMemoryAnswerCommentRepository
   implements AnswerCommentRepository
