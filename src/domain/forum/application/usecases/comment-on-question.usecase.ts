@@ -2,6 +2,8 @@ import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { QuestionRepository } from '../repositories/questions.repository'
 import { QuestionComment } from '../../enterprise/entities/question-comment.entity'
 import { QuestionCommentRepository } from '../repositories/question-comments.repository'
+import { Either, left, right } from '@/core/either'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface CommentQuestionUseCaseRequest {
   authorId: string
@@ -9,9 +11,12 @@ interface CommentQuestionUseCaseRequest {
   content: string
 }
 
-interface CommentQuestionUseCaseResponse {
-  questionComment: QuestionComment
-}
+type CommentQuestionUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    questionComment: QuestionComment
+  }
+>
 
 export class CommentQuestionUseCase {
   constructor(
@@ -19,24 +24,15 @@ export class CommentQuestionUseCase {
     private readonly questionCommentRepository: QuestionCommentRepository,
   ) {}
 
-  async execute({
-    authorId,
-    questionId,
-    content,
-  }: CommentQuestionUseCaseRequest): Promise<CommentQuestionUseCaseResponse> {
+  async execute({ authorId, questionId, content }: CommentQuestionUseCaseRequest): Promise<CommentQuestionUseCaseResponse> {
     const questio = await this.questionRepository.findById(questionId)
-
-    if (!questio) throw new Error('Question Not Found')
-
+    if (!questio) return left(new ResourceNotFoundError())
     const questionComment = QuestionComment.create({
       authorId: new UniqueEntityId(authorId),
       questionId: questio.id,
       content,
     })
-
     await this.questionCommentRepository.create(questionComment)
-    return {
-      questionComment,
-    }
+    return right({ questionComment })
   }
 }

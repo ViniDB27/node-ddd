@@ -1,6 +1,6 @@
 import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question.repository'
 import { makeQuestion } from 'test/factories/make-questio'
-import { FetchRecentQuestionsCase } from './fetch-recent-questions'
+import { FetchRecentQuestionsCase } from './fetch-recent-questions.usecase'
 
 describe('Fetch Recent Questions Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
