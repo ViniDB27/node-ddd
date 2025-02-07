@@ -3,10 +3,13 @@ import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { Optional } from '@/core/types/optional'
 import { Slug } from '@/domain/vos/slug.vo'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { QuestionAttchment } from './question-attachment.entity'
+import { a } from 'vitest/dist/chunks/suite.BJU7kdY9'
 
 export interface QuestionProps {
   authorId: UniqueEntityId
   bestAnswerId?: UniqueEntityId
+  attachments: QuestionAttchment[]
   content: string
   slug: Slug
   title: string
@@ -21,6 +24,10 @@ export class Question extends AggregateRoot<QuestionProps> {
 
   get bestAnswerId() {
     return this.props.bestAnswerId
+  }
+
+  get attachments() {
+    return this.props.attachments
   }
 
   get content() {
@@ -55,6 +62,11 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.props.updatedAt = new Date()
   }
 
+  set attachments(attachments: QuestionAttchment[]) {
+    this.props.attachments = attachments
+    this.touch()
+  }
+
   set title(title: string) {
     this.props.title = title
     this.props.slug = Slug.createFromText(title)
@@ -68,14 +80,14 @@ export class Question extends AggregateRoot<QuestionProps> {
 
   set bestAnswerId(bestAnswerId: UniqueEntityId | undefined) {
     this.props.bestAnswerId = bestAnswerId
-    this.touch()
   }
 
-  static create(props: Optional<QuestionProps, 'createdAt' | 'slug'>, id?: UniqueEntityId): Question {
+  static create(props: Optional<QuestionProps, 'createdAt' | 'slug' | 'attachments'>, id?: UniqueEntityId): Question {
     return new Question(
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
+        attachments: props.attachments ?? [],
         createdAt: props.createdAt ?? new Date(),
       },
       id,

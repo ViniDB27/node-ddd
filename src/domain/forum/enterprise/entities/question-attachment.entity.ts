@@ -2,8 +2,8 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 
 interface QuestionAttchmentProps {
-  questionId: string
-  attachmentId: string
+  questionId: UniqueEntityId
+  attachmentId: UniqueEntityId
 }
 
 export class QuestionAttchment extends Entity<QuestionAttchmentProps> {
