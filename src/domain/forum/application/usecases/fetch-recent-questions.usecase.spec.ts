@@ -15,11 +15,10 @@ describe('Fetch Recent Questions Use Case', async () => {
     await questionsRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 20) }))
     await questionsRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 18) }))
     await questionsRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 23) }))
-
-    const { questions } = await sut.execute({ page: 1 })
-
-    expect(questions.length).toEqual(3)
-    expect(questions).toEqual([
+    const result = await sut.execute({ page: 1 })
+    expect(result.isRight()).toEqual(true)
+    expect(result.value?.questions.length).toEqual(3)
+    expect(result.value?.questions).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 0, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 18) }),
@@ -30,10 +29,7 @@ describe('Fetch Recent Questions Use Case', async () => {
     for (let i = 1; i <= 22; i++) {
       await questionsRepository.create(makeQuestion({}))
     }
-
-    const { questions } = await sut.execute({ page: 2 })
-
-    expect(questions.length).toEqual(2)
+    const result = await sut.execute({ page: 2 })
+    expect(result.value?.questions.length).toEqual(2)
   })
-
 })

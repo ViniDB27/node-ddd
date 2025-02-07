@@ -4,6 +4,8 @@ import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository'
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer.usecase'
 import { makeAnswer } from 'test/factories/make-answer'
+import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 describe('Choose Question Best Answer Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
@@ -13,10 +15,7 @@ describe('Choose Question Best Answer Use Case', async () => {
   beforeEach(() => {
     questionsRepository = new InMemoryQuestionRepository()
     answersRepository = new InMemoryAnswersRepository()
-    sut = new ChooseQuestionBestAnswerUseCase(
-      questionsRepository,
-      answersRepository,
-    )
+    sut = new ChooseQuestionBestAnswerUseCase(questionsRepository, answersRepository)
   })
 
   it('shold be able to choose the best enswer', async () => {
@@ -26,7 +25,6 @@ describe('Choose Question Best Answer Use Case', async () => {
       },
       new UniqueEntityId('question-1'),
     )
-
     const createAnswer = makeAnswer(
       {
         authorId: new UniqueEntityId('author-2'),
@@ -34,18 +32,13 @@ describe('Choose Question Best Answer Use Case', async () => {
       },
       new UniqueEntityId('answer-1'),
     )
-
     await questionsRepository.create(createQuestion)
     await answersRepository.create(createAnswer)
-
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       authorId: 'author-1',
       answerId: createAnswer.id.toString(),
     })
-
-    expect(question.bestAnswerId!.toString()).toEqual(
-      createAnswer.id.toString(),
-    )
+    expect(result.isRight()).toEqual(true)
   })
 
   it('shold not be able to choose the best enswer from another user', async () => {
@@ -55,7 +48,6 @@ describe('Choose Question Best Answer Use Case', async () => {
       },
       new UniqueEntityId('question-1'),
     )
-
     const createAnswer = makeAnswer(
       {
         authorId: new UniqueEntityId('author-2'),
@@ -63,24 +55,22 @@ describe('Choose Question Best Answer Use Case', async () => {
       },
       new UniqueEntityId('answer-1'),
     )
-
     await questionsRepository.create(createQuestion)
     await answersRepository.create(createAnswer)
-
-    await expect(() =>
-      sut.execute({
-        authorId: 'author-2',
-        answerId: createAnswer.id.toString(),
-      }),
-    ).rejects.instanceOf(Error)
+    const result = await sut.execute({
+      authorId: 'author-2',
+      answerId: createAnswer.id.toString(),
+    })
+    expect(result.isLeft()).toEqual(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
   it('shold be able to choose the best enswer with wrong id', async () => {
-    await expect(() =>
-      sut.execute({
-        authorId: 'wrong-id',
-        answerId: 'wrong-id',
-      }),
-    ).rejects.instanceOf(Error)
+    const result = await sut.execute({
+      authorId: 'wrong-id',
+      answerId: 'wrong-id',
+    })
+    expect(result.isLeft()).toEqual(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })

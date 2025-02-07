@@ -2,6 +2,8 @@ import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question
 import { GetQuestionBySlugUseCase } from './get-question-by-slug.usecase'
 import { Slug } from '@/domain/vos/slug.vo'
 import { makeQuestion } from 'test/factories/make-questio'
+import { Right } from '@/core/either'
+import { Question } from '../../enterprise/entities/question.entity'
 
 describe('Get Questio By Slug Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
@@ -17,10 +19,14 @@ describe('Get Questio By Slug Use Case', async () => {
       slug: Slug.create('example-question'),
     })
     await questionsRepository.create(createQuestion)
-    const { question } = await sut.execute({ slug: 'example-question' })
-
-    expect(question.id.toValue).toEqual(createQuestion.id.toValue)
-    expect(question.title).toEqual(createQuestion.title)
-    expect(question.slug.value).toEqual(createQuestion.slug.value)
+    const result = await sut.execute({ slug: 'example-question' })
+    expect(result.isRight()).toEqual(true)
+    expect(questionsRepository.items[0]).toEqual(
+      (
+        result.value as {
+          question: Question
+        }
+      ).question,
+    )
   })
 })

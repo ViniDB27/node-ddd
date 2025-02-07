@@ -3,7 +3,7 @@ import { AnswersRepository } from '../repositories/answers.repository'
 import { AnswerCommentRepository } from '../repositories/answer-comments.repository'
 import { AnswerComment } from '../../enterprise/entities/answer-comment'
 import { Either, left, right } from '@/core/either'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface CommentAnswerUseCaseRequest {
   authorId: string
@@ -12,7 +12,7 @@ interface CommentAnswerUseCaseRequest {
 }
 
 type CommentAnswerUseCaseResponse = Either<
-  NotAllowedError,
+ResourceNotFoundError,
   {
     answerComment: AnswerComment
   }
@@ -25,7 +25,7 @@ export class CommentAnswerUseCase {
 
   async execute({ authorId, answerId, content }: CommentAnswerUseCaseRequest): Promise<CommentAnswerUseCaseResponse> {
     const answer = await this.answerRepository.findById(answerId)
-    if (!answer) return left(new NotAllowedError())
+    if (!answer) return left(new ResourceNotFoundError())
     const answerComment = AnswerComment.create({
       authorId: new UniqueEntityId(authorId),
       answerId: answer.id,

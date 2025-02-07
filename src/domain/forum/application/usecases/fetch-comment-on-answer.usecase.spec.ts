@@ -13,23 +13,16 @@ describe('Fetch Comment Answer Use Case', async () => {
   })
 
   it('shold be able to fetch comments of the answer', async () => {
-    await answerCommentsRepository.create(
-      makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }),
-    )
-    await answerCommentsRepository.create(
-      makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }),
-    )
-    await answerCommentsRepository.create(
-      makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }),
-    )
-
-    const { answerComments } = await sut.execute({
+    await answerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }))
+    await answerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }))
+    await answerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }))
+    const result = await sut.execute({
       answerId: 'answer-id',
       page: 1,
     })
-
-    expect(answerComments.length).toEqual(3)
-    expect(answerComments).toEqual([
+    expect(result.isRight()).toEqual(true)
+    expect(result.value?.answerComments.length).toEqual(3)
+    expect(result.value?.answerComments).toEqual([
       expect.objectContaining({
         answerId: new UniqueEntityId('answer-id'),
       }),
@@ -44,16 +37,12 @@ describe('Fetch Comment Answer Use Case', async () => {
 
   it('shold be able to fetch paginated comments of the answer', async () => {
     for (let i = 1; i <= 22; i++) {
-      await answerCommentsRepository.create(
-        makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }),
-      )
+      await answerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityId('answer-id') }))
     }
-
-    const { answerComments } = await sut.execute({
+    const result = await sut.execute({
       answerId: 'answer-id',
       page: 2,
     })
-
-    expect(answerComments.length).toEqual(2)
+    expect(result.value?.answerComments.length).toEqual(2)
   })
 })

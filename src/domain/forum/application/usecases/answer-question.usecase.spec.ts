@@ -11,13 +11,12 @@ describe('Answer Questio Use Case', async () => {
   })
 
   it('shold be able to create a answer', async () => {
-    const { answer } = await sut.execute({
+    const result = await sut.execute({
       questionId: '1',
       instructorId: '1',
       content: 'answer',
     })
-
-    expect(answer.id).toBeTruthy()
-    expect(answersRepository.intems[0].id).toEqual(answer.id)
+    expect(result.isRight()).toEqual(true)
+    expect(answersRepository.intems[0]).toEqual(result.value?.answer)
   })
 })

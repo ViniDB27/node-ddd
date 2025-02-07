@@ -2,6 +2,8 @@ import { InMemoryQuestionCommentRepository } from 'test/repositories/in-memory-q
 import { makeQuestionComment } from 'test/factories/make-questio-comment'
 import { DeleteCommentQuestionUseCase } from './delete-comment-on-question.usecase'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
+import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 describe('Delete Comment on Question Use Case', async () => {
   let questionCommentsRepository: InMemoryQuestionCommentRepository
@@ -29,20 +31,20 @@ describe('Delete Comment on Question Use Case', async () => {
       authorId: new UniqueEntityId('author-1'),
     })
     await questionCommentsRepository.create(questionComment)
-    await expect(() =>
-      sut.execute({
-        authorId: 'author-2',
-        questionCommentId: questionComment.id.toString(),
-      }),
-    ).rejects.instanceOf(Error)
+    const result = await sut.execute({
+      authorId: 'author-2',
+      questionCommentId: questionComment.id.toString(),
+    })
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
   it('shold not be able to delete a question comment with wrong id', async () => {
-    await expect(() =>
-      sut.execute({
-        authorId: 'author-2',
-        questionCommentId: 'wrong-id',
-      }),
-    ).rejects.instanceOf(Error)
+    const result = await sut.execute({
+      authorId: 'author-2',
+      questionCommentId: 'wrong-id',
+    })
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })

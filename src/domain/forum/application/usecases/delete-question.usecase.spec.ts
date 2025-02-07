@@ -2,6 +2,8 @@ import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question
 import { DeleteQuestionUseCase } from './delete-question.usecsae'
 import { makeQuestion } from 'test/factories/make-questio'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
+import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 describe('Delete Question Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository
@@ -36,20 +38,20 @@ describe('Delete Question Use Case', async () => {
       new UniqueEntityId('question-1'),
     )
     await questionsRepository.create(createQuestion)
-    await expect(() =>
-      sut.execute({
-        authorId: 'author-2',
-        questionId: 'question-1',
-      }),
-    ).rejects.instanceOf(Error)
+    const result = await sut.execute({
+      authorId: 'author-2',
+      questionId: 'question-1',
+    })
+    expect(result.isLeft()).toEqual(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
   it('shold be able to delete a question with wrong id', async () => {
-    await expect(() =>
-      sut.execute({
-        authorId: 'wrong-id',
-        questionId: 'wrong-id',
-      }),
-    ).rejects.instanceOf(Error)
+    const result = await sut.execute({
+      authorId: 'wrong-id',
+      questionId: 'wrong-id',
+    })
+    expect(result.isLeft()).toEqual(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })

@@ -1,4 +1,3 @@
-import { makeQuestion } from 'test/factories/make-questio'
 import { InMemoryQuestionCommentRepository } from 'test/repositories/in-memory-question-comments.repository'
 import { FetchCommentQuestionUseCase } from './fetch-comment-on-question.usecase'
 import { makeQuestionComment } from 'test/factories/make-questio-comment'
@@ -14,23 +13,16 @@ describe('Fetch Comment Question Use Case', async () => {
   })
 
   it('shold be able to fetch comments of the question', async () => {
-    await questionCommentsRepository.create(
-      makeQuestionComment({ questionId: new UniqueEntityId('question-id') }),
-    )
-    await questionCommentsRepository.create(
-      makeQuestionComment({ questionId: new UniqueEntityId('question-id') }),
-    )
-    await questionCommentsRepository.create(
-      makeQuestionComment({ questionId: new UniqueEntityId('question-id') }),
-    )
-
-    const { questionComments } = await sut.execute({
+    await questionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityId('question-id') }))
+    await questionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityId('question-id') }))
+    await questionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityId('question-id') }))
+    const result = await sut.execute({
       questionId: 'question-id',
       page: 1,
     })
-
-    expect(questionComments.length).toEqual(3)
-    expect(questionComments).toEqual([
+    expect(result.isRight()).toEqual(true)
+    expect(result.value?.questionComments.length).toEqual(3)
+    expect(result.value?.questionComments).toEqual([
       expect.objectContaining({
         questionId: new UniqueEntityId('question-id'),
       }),
@@ -45,16 +37,12 @@ describe('Fetch Comment Question Use Case', async () => {
 
   it('shold be able to fetch paginated comments of the question', async () => {
     for (let i = 1; i <= 22; i++) {
-      await questionCommentsRepository.create(
-        makeQuestionComment({ questionId: new UniqueEntityId('question-id') }),
-      )
+      await questionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityId('question-id') }))
     }
-
-    const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       questionId: 'question-id',
       page: 2,
     })
-
-    expect(questionComments.length).toEqual(2)
+    expect(result.value?.questionComments.length).toEqual(2)
   })
 })
