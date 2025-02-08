@@ -4,12 +4,12 @@ import { Optional } from '@/core/types/optional'
 import { Slug } from '@/domain/vos/slug.vo'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { QuestionAttchment } from './question-attachment.entity'
-import { a } from 'vitest/dist/chunks/suite.BJU7kdY9'
+import { QuestionAttachmentList } from './question-attachment-list'
 
 export interface QuestionProps {
   authorId: UniqueEntityId
   bestAnswerId?: UniqueEntityId
-  attachments: QuestionAttchment[]
+  attachments: QuestionAttachmentList
   content: string
   slug: Slug
   title: string
@@ -62,7 +62,7 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.props.updatedAt = new Date()
   }
 
-  set attachments(attachments: QuestionAttchment[]) {
+  set attachments(attachments: QuestionAttachmentList) {
     this.props.attachments = attachments
     this.touch()
   }
@@ -87,7 +87,7 @@ export class Question extends AggregateRoot<QuestionProps> {
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        attachments: props.attachments ?? [],
+        attachments: props.attachments ?? new QuestionAttachmentList([]),
         createdAt: props.createdAt ?? new Date(),
       },
       id,

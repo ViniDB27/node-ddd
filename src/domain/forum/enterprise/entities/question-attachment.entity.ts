@@ -1,7 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 
-interface QuestionAttchmentProps {
+export interface QuestionAttchmentProps {
   questionId: UniqueEntityId
   attachmentId: UniqueEntityId
 }
