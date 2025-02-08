@@ -1,9 +1,9 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 
-interface AnswerAttchmentProps {
-  answerId: string
-  attachmentId: string
+export interface AnswerAttchmentProps {
+  answerId: UniqueEntityId
+  attachmentId: UniqueEntityId
 }
 
 export class AnswerAttchment extends Entity<AnswerAttchmentProps> {

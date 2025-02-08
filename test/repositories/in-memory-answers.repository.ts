@@ -1,33 +1,36 @@
 import { PaginateParams } from '@/core/repositories/pagination-params'
+import { AnswerAttachmentRepository } from '@/domain/forum/application/repositories/answer-attachments.repository'
 import { AnswersRepository } from '@/domain/forum/application/repositories/answers.repository'
 import { Answer } from '@/domain/forum/enterprise/entities/answer.entity'
 
 export class InMemoryAnswersRepository implements AnswersRepository {
-  public intems: Answer[] = []
+  constructor(private readonly answerAttachmentRepository: AnswerAttachmentRepository) {}
+  public items: Answer[] = []
 
   async create(answer: Answer) {
-    this.intems.push(answer)
+    this.items.push(answer)
   }
 
   async update(answer: Answer) {
-    const itemIndex = this.intems.findIndex((item) => item.id === answer.id)
-    this.intems[itemIndex] = answer
+    const itemIndex = this.items.findIndex((item) => item.id === answer.id)
+    this.items[itemIndex] = answer
   }
 
   async delete(answer: Answer) {
-    const itemIndex = this.intems.findIndex((item) => item.id === answer.id)
-    this.intems.splice(itemIndex, 1)
+    const itemIndex = this.items.findIndex((item) => item.id === answer.id)
+    this.items.splice(itemIndex, 1)
+    this.answerAttachmentRepository.deleteManyByAnswerId(answer.id.toString())
   }
 
   async findById(answerId: string) {
     return (
-      this.intems.find((item) => item.id.toString() === answerId) ??
+      this.items.find((item) => item.id.toString() === answerId) ??
       null
     )
   }
 
   async findManyByQuestioId(questionId: string, { page }: PaginateParams) {
-    return this.intems.filter((item) => item.questionId.toString() === questionId)
+    return this.items.filter((item) => item.questionId.toString() === questionId)
     .slice((page -1 ) * 20, page * 20)
   }
 }

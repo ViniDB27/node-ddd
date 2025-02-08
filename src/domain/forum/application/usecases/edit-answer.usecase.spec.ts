@@ -4,13 +4,16 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.r
 import { makeAnswer } from 'test/factories/make-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
 
 describe('Edit Answer Use Case', async () => {
+  let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
   let answersRepository: InMemoryAnswersRepository
   let sut: EditAnswerUseCase
 
   beforeEach(() => {
-    answersRepository = new InMemoryAnswersRepository()
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    answersRepository = new InMemoryAnswersRepository(answerAttachmentsRepository)
     sut = new EditAnswerUseCase(answersRepository)
   })
 

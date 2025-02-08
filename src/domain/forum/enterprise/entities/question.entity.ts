@@ -3,7 +3,6 @@ import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { Optional } from '@/core/types/optional'
 import { Slug } from '@/domain/vos/slug.vo'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
-import { QuestionAttchment } from './question-attachment.entity'
 import { QuestionAttachmentList } from './question-attachment-list'
 
 export interface QuestionProps {
