@@ -4,15 +4,18 @@ import { CommentAnswerUseCase } from './comment-on-answer.usecase'
 import { makeAnswer } from 'test/factories/make-answer'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { AnswerComment } from '../../enterprise/entities/answer-comment.entity'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
 
 describe('Comment on Answer Use Case', async () => {
+  let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
   let answerCommentsRepository: InMemoryAnswerCommentRepository
   let answerRepository: InMemoryAnswersRepository
   let sut: CommentAnswerUseCase
 
   beforeEach(() => {
     answerCommentsRepository = new InMemoryAnswerCommentRepository()
-    answerRepository = new InMemoryAnswersRepository()
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    answerRepository = new InMemoryAnswersRepository(answerAttachmentsRepository)
     sut = new CommentAnswerUseCase(answerRepository, answerCommentsRepository)
   })
 

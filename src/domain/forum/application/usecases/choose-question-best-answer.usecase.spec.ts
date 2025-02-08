@@ -6,15 +6,21 @@ import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer.u
 import { makeAnswer } from 'test/factories/make-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.repository'
 
 describe('Choose Question Best Answer Use Case', async () => {
+  let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+  let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
   let questionsRepository: InMemoryQuestionRepository
   let answersRepository: InMemoryAnswersRepository
   let sut: ChooseQuestionBestAnswerUseCase
 
   beforeEach(() => {
-    questionsRepository = new InMemoryQuestionRepository()
-    answersRepository = new InMemoryAnswersRepository()
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
+    questionsRepository = new InMemoryQuestionRepository(questionAttachmentsRepository)
+    answersRepository = new InMemoryAnswersRepository(answerAttachmentsRepository)
     sut = new ChooseQuestionBestAnswerUseCase(questionsRepository, answersRepository)
   })
 

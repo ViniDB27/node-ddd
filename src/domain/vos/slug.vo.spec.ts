@@ -2,7 +2,7 @@ import { Slug } from './slug.vo'
 
 describe('Slug Vo', async () => {
   it('should be able to create a new slug instance', () => {
-    const slug = new Slug('an-example-slug')
+    const slug = Slug.create('an-example-slug')
     expect(slug.value).toEqual('an-example-slug')
   })
 

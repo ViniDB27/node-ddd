@@ -4,15 +4,18 @@ import { CommentQuestionUseCase } from './comment-on-question.usecase'
 import { makeQuestion } from 'test/factories/make-questio'
 import { QuestionComment } from '../../enterprise/entities/question-comment.entity'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.repository'
 
 describe('Comment on Question Use Case', async () => {
+  let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
   let questionCommentsRepository: InMemoryQuestionCommentRepository
   let questionsRepository: InMemoryQuestionRepository
   let sut: CommentQuestionUseCase
 
   beforeEach(() => {
     questionCommentsRepository = new InMemoryQuestionCommentRepository()
-    questionsRepository = new InMemoryQuestionRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
+    questionsRepository = new InMemoryQuestionRepository(questionAttachmentsRepository)
     sut = new CommentQuestionUseCase(questionsRepository, questionCommentsRepository)
   })
 
