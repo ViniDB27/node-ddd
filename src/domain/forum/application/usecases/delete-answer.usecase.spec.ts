@@ -5,6 +5,7 @@ import { makeAnswer } from 'test/factories/make-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
+import { makeAnswerAttachments } from 'test/factories/make-answer-attachment'
 
 describe('Delete Answer Use Case', async () => {
   let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
@@ -25,12 +26,15 @@ describe('Delete Answer Use Case', async () => {
       new UniqueEntityId('answer-1'),
     )
     await answerRepository.create(createAnswer)
+    answerAttachmentsRepository.items.push(makeAnswerAttachments({ answerId: createAnswer.id, attachmentId: new UniqueEntityId('1') }))
+    answerAttachmentsRepository.items.push(makeAnswerAttachments({ answerId: createAnswer.id, attachmentId: new UniqueEntityId('2') }))
     await sut.execute({
       authorId: 'author-1',
       answerId: 'answer-1',
     })
 
     expect(answerRepository.items).toHaveLength(0)
+    expect(answerAttachmentsRepository.items).toHaveLength(0)
   })
 
   it('shold not be able to delete a answer from another user', async () => {

@@ -5,6 +5,7 @@ import { makeAnswer } from 'test/factories/make-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
+import { makeAnswerAttachments } from 'test/factories/make-answer-attachment'
 
 describe('Edit Answer Use Case', async () => {
   let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
@@ -14,7 +15,7 @@ describe('Edit Answer Use Case', async () => {
   beforeEach(() => {
     answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
     answersRepository = new InMemoryAnswersRepository(answerAttachmentsRepository)
-    sut = new EditAnswerUseCase(answersRepository)
+    sut = new EditAnswerUseCase(answersRepository, answerAttachmentsRepository)
   })
 
   it('shold be able to edit a answer', async () => {
@@ -25,12 +26,20 @@ describe('Edit Answer Use Case', async () => {
       new UniqueEntityId('answer-1'),
     )
     await answersRepository.create(createAnswer)
+    answerAttachmentsRepository.items.push(makeAnswerAttachments({ answerId: createAnswer.id, attachmentId: new UniqueEntityId('1') }))
+    answerAttachmentsRepository.items.push(makeAnswerAttachments({ answerId: createAnswer.id, attachmentId: new UniqueEntityId('2') }))
     const result = await sut.execute({
       authorId: 'author-1',
       answerId: 'answer-1',
       content: 'new content',
+      attachmentsIds: ['1', '3'],
     })
     expect(result.isRight()).toEqual(true)
+    // expect(answersRepository.items[0].attachments.currentItems).toHaveLength(2)
+    // expect(answersRepository.items[0].attachments.currentItems).toEqual([
+    //   expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
+    //   expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
+    // ])
   })
 
   it('shold not be able to edit a answer from another user', async () => {
@@ -45,6 +54,7 @@ describe('Edit Answer Use Case', async () => {
       authorId: 'author-2',
       answerId: 'answer-1',
       content: 'new content',
+      attachmentsIds: ['1', '3'],
     })
     expect(result.isLeft()).toEqual(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)
@@ -55,6 +65,7 @@ describe('Edit Answer Use Case', async () => {
       authorId: 'wrong-id',
       answerId: 'wrong-id',
       content: 'new content',
+      attachmentsIds: ['1', '3'],
     })
     expect(result.isLeft()).toEqual(true)
     expect(result.value).toBeInstanceOf(ResourceNotFoundError)

@@ -3,11 +3,16 @@ import { Answer } from '../../enterprise/entities/answer.entity'
 import { AnswersRepository } from '../repositories/answers.repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { NotAllowedError } from './errors/not-allowed-error'
+import { AnswerAttachmentRepository } from '../repositories/answer-attachments.repository'
+import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
+import { AnswerAttchment } from '../../enterprise/entities/answer-attachment.entity'
+import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 
 interface EditAnswerUseCaseRequest {
   authorId: string
   answerId: string
   content: string
+  attachmentsIds: string[]
 }
 
 type EditAnswerUseCaseResponse = Either<
@@ -18,12 +23,24 @@ type EditAnswerUseCaseResponse = Either<
 >
 
 export class EditAnswerUseCase {
-  constructor(private readonly answerRepository: AnswersRepository) {}
+  constructor(
+    private readonly answerRepository: AnswersRepository,
+    private readonly answersAttachmentRepository: AnswerAttachmentRepository,
+  ) {}
 
-  async execute({ authorId, answerId, content }: EditAnswerUseCaseRequest): Promise<EditAnswerUseCaseResponse> {
+  async execute({ authorId, answerId, content, attachmentsIds }: EditAnswerUseCaseRequest): Promise<EditAnswerUseCaseResponse> {
     const answer = await this.answerRepository.findById(answerId)
     if (!answer) return left(new ResourceNotFoundError())
     if (authorId !== answer.authorId.toString()) return left(new NotAllowedError())
+    const currentAnswerAttachments = await this.answersAttachmentRepository.findManyByAnswerId(answerId)
+    const answerAttachmentList = new AnswerAttachmentList(currentAnswerAttachments)
+    const answerAttachments = attachmentsIds.map((attachmentId) =>
+      AnswerAttchment.create({
+        attachmentId: new UniqueEntityId(attachmentId),
+        answerId: answer.id,
+      }),
+    )
+    answerAttachmentList.update(answerAttachments)
     answer.content = content
     await this.answerRepository.update(answer)
     return right({ answer })
