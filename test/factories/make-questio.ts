@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { UniqueEntityId } from "@/core/vos/unique-entity-id.vo";
 import { Question, QuestionProps } from "@/domain/forum/enterprise/entities/question.entity";
-import { Slug } from "@/domain/vos/slug.vo";
+import { Slug } from '@/domain/forum/enterprise/vos/slug.vo';
 
 export function makeQuestion(
   override: Partial<QuestionProps>,
