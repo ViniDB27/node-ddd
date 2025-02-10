@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { QuestionComment } from '../../enterprise/entities/question-comment.entity'
 import { QuestionCommentRepository } from '../repositories/question-comments.repository'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
 interface DeleteCommentQuestionUseCaseRequest {
   authorId: string

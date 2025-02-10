@@ -3,8 +3,8 @@ import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question
 import { CommentQuestionUseCase } from './comment-on-question.usecase'
 import { makeQuestion } from 'test/factories/make-questio'
 import { QuestionComment } from '../../enterprise/entities/question-comment.entity'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.repository'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 describe('Comment on Question Use Case', async () => {
   let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository

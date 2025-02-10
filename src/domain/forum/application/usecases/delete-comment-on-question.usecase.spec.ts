@@ -2,8 +2,8 @@ import { InMemoryQuestionCommentRepository } from 'test/repositories/in-memory-q
 import { makeQuestionComment } from 'test/factories/make-questio-comment'
 import { DeleteCommentQuestionUseCase } from './delete-comment-on-question.usecase'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 describe('Delete Comment on Question Use Case', async () => {
   let questionCommentsRepository: InMemoryQuestionCommentRepository

@@ -2,10 +2,10 @@ import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { EditAnswerUseCase } from './edit-answer.usecase'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository'
 import { makeAnswer } from 'test/factories/make-answer'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
 import { makeAnswerAttachments } from 'test/factories/make-answer-attachment'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 describe('Edit Answer Use Case', async () => {
   let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository

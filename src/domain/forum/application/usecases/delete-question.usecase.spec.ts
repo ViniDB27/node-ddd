@@ -2,10 +2,10 @@ import { InMemoryQuestionRepository } from 'test/repositories/in-memory-question
 import { DeleteQuestionUseCase } from './delete-question.usecsae'
 import { makeQuestion } from 'test/factories/make-questio'
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.repository'
 import { makeQuestionAttachments } from 'test/factories/make-question-attachments'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 describe('Delete Question Use Case', async () => {
   let questionsRepository: InMemoryQuestionRepository

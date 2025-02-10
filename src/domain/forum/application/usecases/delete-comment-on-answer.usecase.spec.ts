@@ -2,8 +2,8 @@ import { InMemoryAnswerCommentRepository } from 'test/repositories/in-memory-ans
 import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
 import { makeAnswerComment } from 'test/factories/make-answer-comment'
 import { DeleteCommentAnswerUseCase } from './delete-comment-on-answer.usecase'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 describe('Delete Comment on Answer Use Case', async () => {
   let answerCommentsRepository: InMemoryAnswerCommentRepository

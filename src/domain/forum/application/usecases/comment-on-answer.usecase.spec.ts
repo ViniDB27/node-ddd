@@ -2,9 +2,9 @@ import { InMemoryAnswerCommentRepository } from 'test/repositories/in-memory-ans
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository'
 import { CommentAnswerUseCase } from './comment-on-answer.usecase'
 import { makeAnswer } from 'test/factories/make-answer'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { AnswerComment } from '../../enterprise/entities/answer-comment.entity'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 describe('Comment on Answer Use Case', async () => {
   let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
