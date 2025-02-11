@@ -4,6 +4,7 @@ import { Optional } from '@/core/types/optional'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { QuestionAttachmentList } from './question-attachment-list'
 import { Slug } from '../vos/slug.vo'
+import { QuestionBestAnserChoosenEvent } from '../events/question-best-answer-choosen-event'
 
 export interface QuestionProps {
   authorId: UniqueEntityId
@@ -78,7 +79,11 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   set bestAnswerId(bestAnswerId: UniqueEntityId | undefined) {
+    if (bestAnswerId && bestAnswerId !== this.bestAnswerId) {
+      this.addDomainEvents(new QuestionBestAnserChoosenEvent(this, bestAnswerId))
+    }
     this.props.bestAnswerId = bestAnswerId
+    this.touch()
   }
 
   static create(props: Optional<QuestionProps, 'createdAt' | 'slug' | 'attachments'>, id?: UniqueEntityId): Question {
