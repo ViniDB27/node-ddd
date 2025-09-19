@@ -1,15 +1,27 @@
-import { UniqueEntityId } from '../vos/unique-entity-id.vo'
+import { UniqueEntityID } from './unique-entity-id'
 
 export abstract class Entity<Props> {
-  private readonly _id: UniqueEntityId
+  private _id: UniqueEntityID
   protected props: Props
 
   get id() {
     return this._id
   }
 
-  protected constructor(props: any, id?: UniqueEntityId) {
-    this._id = id ?? new UniqueEntityId()
+  protected constructor(props: Props, id?: UniqueEntityID) {
     this.props = props
+    this._id = id ?? new UniqueEntityID()
+  }
+
+  public equals(entity: Entity<any>) {
+    if (entity === this) {
+      return true
+    }
+
+    if (entity.id === this._id) {
+      return true
+    }
+
+    return false
   }
 }

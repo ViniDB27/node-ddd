@@ -3,10 +3,11 @@
     "@rocketseat/eslint-config/node",
     "plugin:vitest-globals/recommended"
   ],
-  "env": {
-    "vitest-globals": true
-  },
   "rules": {
-    "no-useless-constructor": "off"
+    "no-useless-constructor": "off",
+    "no-new": "off"
+  },
+  "env": {
+    "vitest-globals/env": true
   }
 }

@@ -1,13 +1,22 @@
-import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
-import { QuestionAttchment, QuestionAttchmentProps } from '@/domain/forum/enterprise/entities/question-attachment.entity'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-export function makeQuestionAttachments(override: Partial<QuestionAttchmentProps>, id?: UniqueEntityId) {
-  return QuestionAttchment.create(
+import {
+  QuestionAttachment,
+  QuestionAttachmentProps,
+} from '@/domain/forum/enterprise/entities/question-attachment'
+
+export function makeQuestionAttachment(
+  override: Partial<QuestionAttachmentProps> = {},
+  id?: UniqueEntityID,
+) {
+  const questionAttachment = QuestionAttachment.create(
     {
-      questionId: new UniqueEntityId(),
-      attachmentId: new UniqueEntityId(),
+      questionId: new UniqueEntityID(),
+      attachmentId: new UniqueEntityID(),
       ...override,
     },
     id,
   )
+
+  return questionAttachment
 }

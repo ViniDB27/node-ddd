@@ -1,16 +1,17 @@
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { DomainEvent } from '@/core/events/domain-event'
-import { UniqueEntityId } from '@/core/vos/unique-entity-id.vo'
-import { Answer } from '../entities/answer.entity'
+import { Answer } from '../entities/answer'
 
-export class AnswerCreateEvent implements DomainEvent {
+export class AnswerCreatedEvent implements DomainEvent {
   public ocurredAt: Date
-  public readonly answer: Answer
+  public answer: Answer
 
   constructor(answer: Answer) {
-    this.ocurredAt = new Date()
     this.answer = answer
+    this.ocurredAt = new Date()
   }
-  getAggregateId(): UniqueEntityId {
+
+  getAggregateId(): UniqueEntityID {
     return this.answer.id
   }
 }
